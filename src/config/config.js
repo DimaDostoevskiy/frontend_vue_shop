@@ -1,0 +1,1 @@
+export const basicRoute = "http://localhost:1111/";
