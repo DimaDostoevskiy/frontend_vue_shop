@@ -45,7 +45,6 @@ export default {
 
     const singUpEmit = async () => {
       const token = await signIn();
-      console.log(token);
       if (token) emit("signin", token);
     };
 

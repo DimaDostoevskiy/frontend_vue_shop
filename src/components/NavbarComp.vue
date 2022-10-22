@@ -4,7 +4,7 @@
       <div class="container-fluid">
         <div class="navbar-brand fs-5">Test Shop</div>
 
-        <template v-if="!token">
+        <template v-if="!hasToken">
           <div class="d-flex">
             <button @click="signIn" class="btn btn-outline-light" type="button">
               Sign In
@@ -15,7 +15,15 @@
           </div>
         </template>
 
-        <div v-if="token" class="d-flex">
+        <div v-if="hasToken" class="d-flex">
+          <button
+            @click="createProduct"
+            class="btn btn-outline-light"
+            type="button"
+          >
+            Create Product
+          </button>
+
           <button @click="signOut" class="btn btn-outline-light" type="button">
             Sign Out
           </button>
@@ -40,11 +48,14 @@ export default {
     signUp() {
       this.$emit("showSignUp");
     },
+    createProduct() {
+      this.$emit("showCreateProduct");
+    },
     signOut() {
       this.$emit("signOut");
     },
   },
-  props: ["token"],
+  props: ["hasToken"],
 };
 </script>
 

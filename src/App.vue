@@ -1,19 +1,22 @@
 <template>
   <div class="app">
     <NavbarComp
-      :isToken="isToken"
+      :hasToken="hasToken"
       @showSignUp="showSignUp"
       @showSignIn="showSignIn"
       @signOut="signOut"
+      @showCreateProduct="showCreateProduct"
     />
-    <template v-if="!isToken">
-      <SignInFormComp @signin="signIn" v-if="activComp === 'signin'" />
-      <SignUpFormComp @signup="signUp" v-if="activComp === 'signup'" />
+
+    <template v-if="!hasToken">
+      <SignInFormComp @signin="signIn" v-if="activComp === 'sign-in'" />
+      <SignUpFormComp @signup="signUp" v-if="activComp === 'sign-up'" />
     </template>
-    <template v-if="isToken">
-      <ShopComp />
+
+    <template v-if="hasToken">
+      <CreateProductComp v-if="activComp === 'create-product'" />
+      <ShopComp v-if="activComp === 'shop-main'" />
     </template>
-    <CreateProductComp />
   </div>
 </template>
 
@@ -36,24 +39,29 @@ export default {
   data() {
     return {
       activComp: "",
-      isToken: false,
+      hasToken: false,
     };
   },
   methods: {
     showSignIn() {
-      this.activComp = "signin";
+      this.activComp = "sign-in";
     },
     showSignUp() {
-      this.activComp = "signup";
+      this.activComp = "sign-up";
     },
-    signIn(isToken) {
-      this.isToken = isToken;
+    showCreateProduct() {
+      this.activComp = "create-product";
     },
-    signUp(isToken) {
-      this.isToken = isToken;
+    signIn(hasToken) {
+      this.activComp = "shop-main";
+      this.hasToken = hasToken;
+    },
+    signUp(hasToken) {
+      this.activComp = "shop-main";
+      this.hasToken = hasToken;
     },
     signOut() {
-      this.isToken = false;
+      this.hasToken = false;
       this.activComp = "";
     },
   },
@@ -62,7 +70,7 @@ export default {
 
 <style scoped>
 .app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: Helvetica, Arial, sans-serif;
   background-color: rgba(22, 22, 42, 0.8);
   height: 100vh;
   margin: 0px;

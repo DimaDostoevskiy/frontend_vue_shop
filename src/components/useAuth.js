@@ -13,18 +13,22 @@ export default () => {
     const hasError = ref(false);
 
     const signIn = async () => {
-        let response = await fetch(basicRoute + "user/login", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json;charset=utf-8",
-            },
-            body: JSON.stringify(user.value),
-        });
-        let result = await response.json();
+        try {
+            let response = await fetch(basicRoute + "user/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json;charset=utf-8",
+                },
+                body: JSON.stringify(user.value),
+            });
+            let result = await response.json();
 
-        if (response.ok) {
-            return result.token;
-        } else {
+            if (response.ok) {
+                return result.token;
+            } else {
+                hasError.value = true;
+            }
+        } catch (error) {
             hasError.value = true;
         }
     }
@@ -44,7 +48,6 @@ export default () => {
                 hasError.value = true;
             }
         } catch (error) {
-            console.log(error);
             hasError.value = true;
         }
     }
