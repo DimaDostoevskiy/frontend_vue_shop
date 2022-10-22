@@ -1,20 +1,23 @@
 <template>
   <div class="app">
     <NavbarComp
-      :hasToken="hasToken"
+      :token="token"
       @showSignUp="showSignUp"
       @showSignIn="showSignIn"
       @signOut="signOut"
       @showCreateProduct="showCreateProduct"
     />
 
-    <template v-if="!hasToken">
+    <template v-if="!token">
       <SignInFormComp @signin="signIn" v-if="activComp === 'sign-in'" />
       <SignUpFormComp @signup="signUp" v-if="activComp === 'sign-up'" />
     </template>
 
-    <template v-if="hasToken">
-      <CreateProductComp v-if="activComp === 'create-product'" />
+    <template v-if="token">
+      <CreateProductComp
+        :token="token"
+        v-if="activComp === 'create-product'"
+      />
       <ShopComp v-if="activComp === 'shop-main'" />
     </template>
   </div>
@@ -39,8 +42,12 @@ export default {
   data() {
     return {
       activComp: "",
-      hasToken: false,
+      token: "",
     };
+  },
+  mounted() {
+    const token = localStorage.getItem("token");
+    if (token) this.token = token;
   },
   methods: {
     showSignIn() {
@@ -52,16 +59,17 @@ export default {
     showCreateProduct() {
       this.activComp = "create-product";
     },
-    signIn(hasToken) {
+    signIn(token) {
       this.activComp = "shop-main";
-      this.hasToken = hasToken;
+      this.token = token;
     },
-    signUp(hasToken) {
+    signUp(token) {
       this.activComp = "shop-main";
-      this.hasToken = hasToken;
+      this.token = token;
     },
     signOut() {
-      this.hasToken = false;
+      localStorage.removeItem('token');
+      this.token = false;
       this.activComp = "";
     },
   },

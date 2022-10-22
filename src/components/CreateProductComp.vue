@@ -4,11 +4,7 @@
       <div class="col-6 card bg-dark text-bg-dark">
         <div class="row m-3">
           <div class="col-4">
-            <img
-              :src="imageUrl"
-              class="img"
-              alt="product image"
-            />
+            <img :src="imageUrl" class="img" alt="product image" />
           </div>
 
           <div class="col-8">
@@ -45,7 +41,6 @@
 
             <button
               @click="addNewProduct"
-              :disabled="!isCheckInputs"
               class="btn btn-outline-light w-100 mt-4"
               type="button"
             >
@@ -53,44 +48,23 @@
             </button>
           </div>
         </div>
+        <div class="row">
+          <span
+            class="text-center fs-4"
+            :class="{ 'text-danger': hasError, 'text-success': !hasError }"
+            >{{ infoMessage }}
+          </span>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
-
-
-<!-- <template>
-  <div class="container bg-dark">
-    <img :src="imageUrl" width="100" height="100" />
-
-    <input @change="checkInputs" v-model="newProduct.name" type="text" />
-    <input @change="checkInputs" v-model="newProduct.price" type="text" />
-
-    <label for="file_input" class="btn btn-outline-light">Load image</label>
-    <input
-      @change="onFilePicked"
-      id="file_input"
-      type="file"
-      style="display: none"
-      accept="image/*"
-    />
-
-    <button
-      @click="addNewProduct"
-      class="btn btn-outline-light"
-      type="button"
-      :disabled="!isCheckInputs"
-    >
-      Add new product
-    </button>
-  </div>
-</template> -->
-
 <script>
 import { basicRoute } from "@/config/config";
 
 export default {
+  props: ["token"],
   name: "CreateProductComp",
   data() {
     return {
@@ -101,42 +75,54 @@ export default {
       },
       imageUrl: null,
       infoMessage: "",
-      isCheckInputs: false,
+      hasError: false,
     };
   },
   methods: {
     checkInputs() {
-      console.log(this.newProduct.name);
-      this.isCheckInputs = this.newProduct.name === "ad";
+      return (
+        this.newProduct.name !== "" &&
+        this.newProduct.price > 0 &&
+        this.newProduct.productImage !== null
+      );
     },
 
-    onFilePicked(e) {
+    onFilePicked(event) {
       const fileReader = new FileReader();
-      const files = e.target.files;
+      const files = event.target.files;
+      this.newProduct.productImage = files[0];
 
       fileReader.addEventListener("load", () => {
         this.imageUrl = fileReader.result;
-        this.productImage = files[0];
       });
 
       fileReader.readAsDataURL(files[0]);
     },
 
     async addNewProduct() {
+      if (!this.checkInputs()) {
+        this.infoMessage = "Error";
+        this.hasError = true;
+        return;
+      }
+
+      let fd = new FormData();
+      fd.append("name", this.newProduct.name);
+      fd.append("price", this.newProduct.price);
+      fd.append("productImage", this.newProduct.productImage);
+
       try {
         let response = await fetch(basicRoute + "products", {
           method: "POST",
           headers: {
-            "Content-Type": "application/json;charset=utf-8",
+            Authorization: `token ${this.token}`,
           },
-          body: JSON.stringify(this.newProduct),
+          body: fd,
         });
 
-        if (response.ok) {
-          this.infoMessage = `Product ${this.newProduct.name} added`;
-        } else {
-          this.infoMessage = "Srver error";
-        }
+        const resultMessage = await response.json();
+        this.infoMessage = `${resultMessage.message}`;
+        this.hasError = !response.ok;
       } catch (error) {
         this.infoMessage = `Srver error: ${error}`;
       }
@@ -146,8 +132,7 @@ export default {
 </script>
 
 <style scoped>
-img{
-  background-color: green;
+img {
   height: 100%;
   width: 100%;
 }

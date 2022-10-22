@@ -24,6 +24,7 @@ export default () => {
             let result = await response.json();
 
             if (response.ok) {
+                localStorage.setItem('token', result.token);
                 return result.token;
             } else {
                 hasError.value = true;
