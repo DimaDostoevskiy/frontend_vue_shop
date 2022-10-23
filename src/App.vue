@@ -14,11 +14,8 @@
     </template>
 
     <template v-if="token">
-      <CreateProductComp
-        :token="token"
-        v-if="activComp === 'create-product'"
-      />
-      <ShopComp v-if="activComp === 'shop-main'" />
+      <MainComp :token="token" v-if="activComp === 'main'" />
+      <CreateProductComp v-if="activComp === 'create-product'" :token="token" />
     </template>
   </div>
 </template>
@@ -27,16 +24,16 @@
 import SignUpFormComp from "./components/SignUpFormComp.vue";
 import SignInFormComp from "./components/SignInFormComp.vue";
 import NavbarComp from "./components/NavbarComp.vue";
-import ShopComp from "./components/ShopComp.vue";
+import MainComp from "./components/MainComp.vue";
 import CreateProductComp from "./components/CreateProductComp.vue";
 
 export default {
   name: "App",
   components: {
+    MainComp,
+    NavbarComp,
     SignUpFormComp,
     SignInFormComp,
-    NavbarComp,
-    ShopComp,
     CreateProductComp,
   },
   data() {
@@ -46,8 +43,8 @@ export default {
     };
   },
   mounted() {
-    const token = localStorage.getItem("token");
-    if (token) this.token = token;
+    this.token = localStorage.getItem("token");
+    if (this.token) this.activComp = "main";
   },
   methods: {
     showSignIn() {
@@ -60,16 +57,16 @@ export default {
       this.activComp = "create-product";
     },
     signIn(token) {
-      this.activComp = "shop-main";
       this.token = token;
+      this.activComp = "main";
     },
     signUp(token) {
-      this.activComp = "shop-main";
       this.token = token;
+      this.activComp = "main";
     },
     signOut() {
-      localStorage.removeItem('token');
-      this.token = false;
+      localStorage.removeItem("token");
+      this.token = "";
       this.activComp = "";
     },
   },

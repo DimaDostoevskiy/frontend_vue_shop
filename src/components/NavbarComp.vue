@@ -36,6 +36,7 @@
   <script>
 export default {
   name: "NavbarComp",
+  props: ["token"],
   data() {
     return {
       isLogin: false,
@@ -55,7 +56,6 @@ export default {
       this.$emit("signOut");
     },
   },
-  props: ["token"],
 };
 </script>
 
