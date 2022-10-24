@@ -10,7 +10,7 @@
               alt="product image"
             />
             <div class="card-body">
-              <h6 class="card-title"> {{ `delicious ${item.name}` }}</h6>
+              <h6 class="card-title">{{ `delicious ${item.name}` }}</h6>
               <p class="card-text">{{ `₽ ${item.price}` }}</p>
               <div class="row">
                 <div class="col">
@@ -25,16 +25,16 @@
                   <button
                     type="button"
                     class="btn btn-outline-success btn-sm w-100"
-                    @click="updateProduct(item._id)"
+                    @click="updateProduct(item)"
                   >
                     Update
                   </button>
                 </div>
                 <div class="col">
                   <button
-                    @click="deleteProduct(item._id)"
                     type="button"
                     class="btn btn-outline-danger btn-sm w-100"
+                    @click="deleteProduct(item._id)"
                   >
                     Delete
                   </button>
@@ -67,16 +67,14 @@ export default {
   },
   methods: {
     deleteProduct(id) {
-      console.log(this.token);
       fetch(`${basicRoute}products/${id}`, {
         method: "DELETE",
         headers: {
           Authorization: `token ${this.token}`,
         },
       })
-        .then((response) => {
+        .then(() => {
           location.reload();
-          console.log(response);
         })
         .catch((error) => {
           this.hasError = true;
@@ -84,8 +82,8 @@ export default {
           console.log(`Error: ${error}`);
         });
     },
-    updateProduct(id){
-
+    updateProduct(updateProduct) {
+      this.$emit("showUpdateProduct", updateProduct);
     },
 
     getAllProducts() {

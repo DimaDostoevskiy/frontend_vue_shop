@@ -121,7 +121,7 @@ export default {
         });
 
         const resultMessage = await response.json();
-        this.infoMessage = `${resultMessage.message}`;
+        this.infoMessage = resultMessage.message;
         this.hasError = !response.ok;
       } catch (error) {
         this.infoMessage = `Srver error: ${error}`;

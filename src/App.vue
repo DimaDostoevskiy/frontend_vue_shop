@@ -14,18 +14,28 @@
     </template>
 
     <template v-if="token">
-      <MainComp :token="token" v-if="activComp === 'main'" />
+      <MainComp
+        v-if="activComp === 'main'"
+        :token="token"
+        @showUpdateProduct="showUpdateProduct"
+      />
       <CreateProductComp v-if="activComp === 'create-product'" :token="token" />
+      <UpdateProductComp
+        v-if="activComp === 'update-product'"
+        :token="token"
+        :updateProduct="updateProduct"
+      />
     </template>
   </div>
 </template>
 
 <script>
+import MainComp from "./components/MainComp.vue";
+import NavbarComp from "./components/NavbarComp.vue";
 import SignUpFormComp from "./components/SignUpFormComp.vue";
 import SignInFormComp from "./components/SignInFormComp.vue";
-import NavbarComp from "./components/NavbarComp.vue";
-import MainComp from "./components/MainComp.vue";
 import CreateProductComp from "./components/CreateProductComp.vue";
+import UpdateProductComp from "./components/UpdateProductComp.vue";
 
 export default {
   name: "App",
@@ -35,11 +45,13 @@ export default {
     SignUpFormComp,
     SignInFormComp,
     CreateProductComp,
+    UpdateProductComp,
   },
   data() {
     return {
       activComp: "",
       token: "",
+      updateProduct: {},
     };
   },
   mounted() {
@@ -55,6 +67,10 @@ export default {
     },
     showCreateProduct() {
       this.activComp = "create-product";
+    },
+    showUpdateProduct(product) {
+      this.updateProduct = product;
+      this.activComp = "update-product";
     },
     signIn(token) {
       this.token = token;
