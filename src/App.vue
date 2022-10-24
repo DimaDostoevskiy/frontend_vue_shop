@@ -76,9 +76,9 @@ export default {
 <style scoped>
 .app {
   font-family: Helvetica, Arial, sans-serif;
-  background-color: rgba(22, 22, 42, 0.8);
-  height: 100vh;
   margin: 0px;
   padding: 0px;
+  min-height: 100vh;
+  background-color: rgba(42, 42, 42, 1);
 }
 </style>
