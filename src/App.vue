@@ -6,6 +6,7 @@
       @showSignIn="showSignIn"
       @signOut="signOut"
       @showCreateProduct="showCreateProduct"
+      @showBasket="showBasket"
     />
 
     <template v-if="!token">
@@ -71,6 +72,9 @@ export default {
     showUpdateProduct(product) {
       this.updateProduct = product;
       this.activComp = "update-product";
+    },
+    showBasket(){
+      this.activComp = "basket";
     },
     signIn(token) {
       this.token = token;

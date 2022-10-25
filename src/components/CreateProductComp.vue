@@ -11,10 +11,10 @@
             <label for="newProductName" class="form-label">Product name</label>
             <input
               id="newProductName"
-              @change="checkInputs"
-              v-model="newProduct.name"
               type="text"
               class="form-control w-100"
+              v-model="newProduct.name"
+              @change="checkInputs"
             />
 
             <label for="newProductPrice" class="form-label mt-2"

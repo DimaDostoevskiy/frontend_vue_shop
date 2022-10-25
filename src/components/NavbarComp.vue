@@ -17,9 +17,16 @@
 
         <div v-if="token" class="d-flex">
           <button
-            @click="createProduct"
             class="btn btn-outline-light"
             type="button"
+            @click="showBasket"
+          >
+            Bascet
+          </button>
+          <button
+            class="btn btn-outline-light"
+            type="button"
+            @click="showCreateProduct"
           >
             Create Product
           </button>
@@ -49,11 +56,14 @@ export default {
     signUp() {
       this.$emit("showSignUp");
     },
-    createProduct() {
-      this.$emit("showCreateProduct");
-    },
     signOut() {
       this.$emit("signOut");
+    },
+    showCreateProduct() {
+      this.$emit("showCreateProduct");
+    },
+    showBasket() {
+      this.$emit("showBasket");
     },
   },
 };

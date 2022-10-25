@@ -17,6 +17,7 @@
                   <button
                     type="button"
                     class="btn btn-outline-info btn-sm w-100"
+                    @click="buy(item)"
                   >
                     Buy
                   </button>
@@ -66,6 +67,10 @@ export default {
     this.getAllProducts();
   },
   methods: {
+    buy(product){
+      console.log(product);
+    },
+
     deleteProduct(id) {
       fetch(`${basicRoute}products/${id}`, {
         method: "DELETE",
@@ -82,6 +87,7 @@ export default {
           console.log(`Error: ${error}`);
         });
     },
+
     updateProduct(updateProduct) {
       this.$emit("showUpdateProduct", updateProduct);
     },

@@ -103,6 +103,21 @@ export default {
         this.product.productImage !== null
       );
     },
+
+    onFilePicked(event) {
+      this.isUpdateImage = true;
+      const fileReader = new FileReader();
+
+      fileReader.addEventListener("load", () => {
+        this.imageUrl = fileReader.result;
+      });
+
+      const files = event.target.files;
+      this.product.productImage = files[0];
+
+      fileReader.readAsDataURL(files[0]);
+    },
+
     update() {
       if (!this.checkInputs()) {
         this.infoMessage = "Error";
@@ -113,7 +128,7 @@ export default {
       let fd = new FormData();
       fd.append("name", this.product.name);
       fd.append("price", this.product.price);
-      fd.append("productimage", this.product.productImage);
+      fd.append("productImage", this.product.productImage);
 
       fetch(`${basicRoute}products/${this.updateProduct._id}`, {
         method: "PATCH",
@@ -124,28 +139,13 @@ export default {
       })
         .then((response) => response.json())
         .then((data) => {
-          console.log(data);
           this.hasError = false;
           this.infoMessage = data.message;
         })
         .catch((error) => {
-          console.log(error);
           this.hasError = true;
           this.infoMessage = error.message;
         });
-    },
-
-    onFilePicked(event) {
-      this.isUpdateImage = true;
-      const fileReader = new FileReader();
-      const files = event.target.files;
-      this.product.productImage = files[0];
-
-      fileReader.addEventListener("load", () => {
-        this.imageUrl = fileReader.result;
-      });
-
-      fileReader.readAsDataURL(files[0]);
     },
   },
 };
