@@ -31,6 +31,13 @@
           >
             Create Product
           </button>
+          <button
+            type="button"
+            class="btn btn-outline-light"
+            @click="showOrdersPage"
+          >
+            Orders
+          </button>
 
           <button @click="signOut" class="btn btn-outline-light" type="button">
             Sign Out
@@ -63,6 +70,9 @@ export default {
     showCreateProduct() {
       this.$emit("showCreateProduct");
     },
+    showOrdersPage(){
+      this.$emit("showOrdersPage");
+    }
   },
 };
 </script>

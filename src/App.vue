@@ -1,11 +1,12 @@
 <template>
   <div class="app">
     <NavbarComp
-      @showCreateProduct="showCreateProduct"
-      @showSignUp="showSignUp"
-      @showSignIn="showSignIn"
-      @signOut="signOut"
-      :token="token"
+    @showCreateProduct="showCreateProduct"
+    @showOrdersPage="showOrdersPage"
+    @showSignUp="showSignUp"
+    @showSignIn="showSignIn"
+    @signOut="signOut"
+    :token="token"
     />
 
     <template v-if="!token">
@@ -20,6 +21,7 @@
         @showUpdateProduct="showUpdateProduct"
       />
       <CreateProductComp v-if="activComp === 'create-product'" :token="token" />
+      <OrdersPage v-if="activComp === 'orders'" :token="token" />
       <UpdateProductComp
         v-if="activComp === 'update-product'"
         :token="token"
@@ -36,6 +38,7 @@ import SignUpFormComp from "./components/SignUpFormComp.vue";
 import SignInFormComp from "./components/SignInFormComp.vue";
 import CreateProductComp from "./components/CreateProductComp.vue";
 import UpdateProductComp from "./components/UpdateProductComp.vue";
+import OrdersPage from "./components/OrdersPage.vue";
 
 export default {
   name: "App",
@@ -46,6 +49,7 @@ export default {
     SignInFormComp,
     CreateProductComp,
     UpdateProductComp,
+    OrdersPage,
   },
   data() {
     return {
@@ -72,8 +76,8 @@ export default {
       this.updateProduct = product;
       this.activComp = "update-product";
     },
-    showBasket() {
-      this.activComp = "basket";
+    showOrdersPage() {
+      this.activComp = "orders";
     },
     signIn(token) {
       this.token = token;
