@@ -1,12 +1,11 @@
 <template>
   <div class="app">
     <NavbarComp
-      :token="token"
+      @showCreateProduct="showCreateProduct"
       @showSignUp="showSignUp"
       @showSignIn="showSignIn"
       @signOut="signOut"
-      @showCreateProduct="showCreateProduct"
-      @showBasket="showBasket"
+      :token="token"
     />
 
     <template v-if="!token">
@@ -73,7 +72,7 @@ export default {
       this.updateProduct = product;
       this.activComp = "update-product";
     },
-    showBasket(){
+    showBasket() {
       this.activComp = "basket";
     },
     signIn(token) {

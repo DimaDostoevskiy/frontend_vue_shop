@@ -6,10 +6,18 @@
 
         <template v-if="!token">
           <div class="d-flex">
-            <button @click="signIn" class="btn btn-outline-light" type="button">
+            <button
+              type="button"
+              class="btn btn-outline-light"
+              @click="showSignIn"
+            >
               Sign In
             </button>
-            <button @click="signUp" class="btn btn-outline-light" type="button">
+            <button
+              type="button"
+              class="btn btn-outline-light"
+              @click="showSignUp"
+            >
               Sign Up
             </button>
           </div>
@@ -17,15 +25,8 @@
 
         <div v-if="token" class="d-flex">
           <button
-            class="btn btn-outline-light"
             type="button"
-            @click="showBasket"
-          >
-            Bascet
-          </button>
-          <button
             class="btn btn-outline-light"
-            type="button"
             @click="showCreateProduct"
           >
             Create Product
@@ -50,10 +51,10 @@ export default {
     };
   },
   methods: {
-    signIn() {
+    showSignIn() {
       this.$emit("showSignIn");
     },
-    signUp() {
+    showSignUp() {
       this.$emit("showSignUp");
     },
     signOut() {
@@ -61,9 +62,6 @@ export default {
     },
     showCreateProduct() {
       this.$emit("showCreateProduct");
-    },
-    showBasket() {
-      this.$emit("showBasket");
     },
   },
 };
