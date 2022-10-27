@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import useAuth from "@/components/useAuth";
+import useAuth from "@/composition/useAuth";
 export default {
   name: "SignUpFormComp",
   setup(props, { emit }) {
