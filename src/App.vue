@@ -1,24 +1,25 @@
 <template>
   <div class="app">
     <NavbarComp
-    @showCreateProduct="showCreateProduct"
-    @showOrdersPage="showOrdersPage"
-    @showSignUp="showSignUp"
-    @showSignIn="showSignIn"
-    @signOut="signOut"
-    :token="token"
+      @showCreateProduct="showCreateProduct"
+      @showOrdersPage="showOrdersPage"
+      @showSignUp="showSignUp"
+      @showSignIn="showSignIn"
+      @signOut="signOut"
+      :token="token"
     />
 
     <template v-if="!token">
-      <SignInFormComp @signin="signIn" v-if="activComp === 'sign-in'" />
-      <SignUpFormComp @signup="signUp" v-if="activComp === 'sign-up'" />
+      <StartPage v-if="activComp === 'start-page'" />
+      <SignInFormComp v-if="activComp === 'sign-in'" @signin="signIn" />
+      <SignUpFormComp v-if="activComp === 'sign-up'" @signup="signUp" />
     </template>
 
     <template v-if="token">
-      <MainComp
-        v-if="activComp === 'main'"
-        :token="token"
+      <MainPage
+        v-if="activComp === 'main-page'"
         @showUpdateProduct="showUpdateProduct"
+        :token="token"
       />
       <CreateProductComp v-if="activComp === 'create-product'" :token="token" />
       <OrdersPage v-if="activComp === 'orders'" :token="token" />
@@ -32,24 +33,26 @@
 </template>
 
 <script>
-import MainComp from "./components/MainComp.vue";
+import MainPage from "./components/MainPage.vue";
+import StartPage from "./components/StartPage.vue";
+import OrdersPage from "./components/OrdersPage.vue";
 import NavbarComp from "./components/NavbarComp.vue";
 import SignUpFormComp from "./components/SignUpFormComp.vue";
 import SignInFormComp from "./components/SignInFormComp.vue";
 import CreateProductComp from "./components/CreateProductComp.vue";
 import UpdateProductComp from "./components/UpdateProductComp.vue";
-import OrdersPage from "./components/OrdersPage.vue";
 
 export default {
   name: "App",
   components: {
-    MainComp,
+    StartPage,
+    MainPage,
     NavbarComp,
+    OrdersPage,
     SignUpFormComp,
     SignInFormComp,
     CreateProductComp,
     UpdateProductComp,
-    OrdersPage,
   },
   data() {
     return {
@@ -60,7 +63,8 @@ export default {
   },
   mounted() {
     this.token = localStorage.getItem("token");
-    if (this.token) this.activComp = "main";
+    if (this.token) this.activComp = "main-page";
+    else this.activComp = "start-page";
   },
   methods: {
     showSignIn() {
@@ -81,22 +85,22 @@ export default {
     },
     signIn(token) {
       this.token = token;
-      this.activComp = "main";
+      this.activComp = "main-page";
     },
     signUp(token) {
       this.token = token;
-      this.activComp = "main";
+      this.activComp = "main-page";
     },
     signOut() {
-      localStorage.removeItem("token");
       this.token = "";
       this.activComp = "";
+      localStorage.removeItem("token");
     },
   },
 };
 </script>
 
-<style scoped>
+<style>
 .app {
   font-family: Helvetica, Arial, sans-serif;
   margin: 0px;

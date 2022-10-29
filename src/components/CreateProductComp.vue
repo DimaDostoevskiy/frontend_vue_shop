@@ -4,7 +4,7 @@
       <div class="col-6 card bg-dark text-bg-dark">
         <div class="row m-3">
           <div class="col-4">
-            <img :src="imageUrl" class="img" alt="product image" />
+            <img :src="imageUrl" class="img w-100" alt="product image" />
           </div>
 
           <div class="col-8">
@@ -13,7 +13,7 @@
               id="newProductName"
               type="text"
               class="form-control w-100"
-              v-model="newProduct.name"
+              v-model="name"
               @change="checkInputs"
             />
 
@@ -22,10 +22,10 @@
             >
             <input
               id="newProductPrice"
-              @change="checkInputs"
-              v-model="newProduct.price"
               type="text"
               class="form-control w-100"
+              v-model="price"
+              @change="checkInputs"
             />
 
             <label for="file_input" class="btn btn-outline-light w-100 mt-4"
@@ -68,29 +68,41 @@ export default {
   name: "CreateProductComp",
   data() {
     return {
-      newProduct: {
-        name: "",
-        price: "",
-        productImage: null,
-      },
+      name: "",
+      price: "",
+      productImage: null,
+
       imageUrl: null,
+
       infoMessage: "",
       hasError: false,
     };
   },
   methods: {
-    checkInputs() {
-      return (
-        this.newProduct.name !== "" &&
-        this.newProduct.price > 0 &&
-        this.newProduct.productImage !== null
-      );
+    checkName() {
+      if (!isFinite(this.name) && this.name.length > 3) return true;
+      this.hasError = true;
+      this.infoMessage = "invalid product name";
+      return false;
     },
-
+    checkPrice() {
+      this.price = (Math.floor(this.price * 100) / 100).toFixed(2);
+      if (!isNaN(this.price) && this.price > 0) return true;
+      this.hasError = true;
+      this.infoMessage = "invalid price";
+      this.price = "";
+      return false;
+    },
+    checkImage() {
+      if (this.productImage !== null) return true;
+      this.hasError = true;
+      this.infoMessage = "load image, pleace";
+      return false;
+    },
     onFilePicked(event) {
       const fileReader = new FileReader();
       const files = event.target.files;
-      this.newProduct.productImage = files[0];
+      this.productImage = files[0];
 
       fileReader.addEventListener("load", () => {
         this.imageUrl = fileReader.result;
@@ -100,16 +112,12 @@ export default {
     },
 
     async addNewProduct() {
-      if (!this.checkInputs()) {
-        this.infoMessage = "Error";
-        this.hasError = true;
-        return;
-      }
+      if (!this.checkName() || !this.checkPrice() || !this.checkImage()) return;
 
       let fd = new FormData();
-      fd.append("name", this.newProduct.name);
-      fd.append("price", this.newProduct.price);
-      fd.append("productImage", this.newProduct.productImage);
+      fd.append("name", this.name);
+      fd.append("price", this.price);
+      fd.append("productImage", this.productImage);
 
       try {
         let response = await fetch(basicRoute + "products", {
@@ -120,10 +128,15 @@ export default {
           body: fd,
         });
 
-        const resultMessage = await response.json();
-        this.infoMessage = resultMessage.message;
-        this.hasError = !response.ok;
+        if (response.status === 201) {
+          this.hasError = false;
+          this.infoMessage = "product created";
+        } else {
+          this.hasError = true;
+          this.infoMessage = "product not created";
+        }
       } catch (error) {
+        this.hasError = true;
         this.infoMessage = `Srver error: ${error}`;
       }
     },
@@ -132,7 +145,5 @@ export default {
 </script>
 
 <style scoped>
-img {
-  width: 100%;
-}
+
 </style>

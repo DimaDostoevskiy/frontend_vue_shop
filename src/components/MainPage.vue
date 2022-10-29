@@ -1,48 +1,50 @@
 <template>
   <div>
     <!-- Main Page -->
-    <div class="container mt-4">
-      <div class="row">
-        <div
-          class="col-lg-3 col-md-4 col-sm-12"
-          v-for="item in productList"
-          :key="item.id"
-        >
-          <div class="card m-2 bg-dark text-bg-dark">
-            <img
-              :src="`http://localhost:1111/${item.productImage}`"
-              class="card-img-top"
-              alt="product image"
-            />
-            <div class="card-body">
-              <h6 class="card-title">{{ `delicious ${item.name}` }}</h6>
-              <p class="card-text">{{ `₽ ${item.price}` }}</p>
+    <div class="container-fluid pt-4">
+      <div class="container">
+        <div class="row">
+          <div
+            class="col-lg-3 col-md-4 col-sm-12"
+            v-for="item in productList"
+            :key="item.id"
+          >
+            <div class="card m-2 bg-dark text-bg-dark">
+              <img
+                :src="`http://localhost:1111/${item.productImage}`"
+                class="card-img-top"
+                alt="product image"
+              />
+              <div class="card-body">
+                <h6 class="card-title">{{ `delicious ${item.name}` }}</h6>
+                <p class="card-text">{{ `₽ ${item.price}` }}</p>
 
-              <button
-                type="button"
-                class="btn btn-outline-info btn-sm w-100 mt-2"
-                @click="newOrderProductId = item._id"
-                data-bs-toggle="modal"
-                data-bs-target="#exampleModal"
-              >
-                Buy
-              </button>
+                <button
+                  type="button"
+                  class="btn btn-outline-info btn-sm w-100 mt-2"
+                  @click="newOrderProductId = item._id"
+                  data-bs-toggle="modal"
+                  data-bs-target="#exampleModal"
+                >
+                  Buy
+                </button>
 
-              <button
-                type="button"
-                class="btn btn-outline-success btn-sm w-100 mt-2"
-                @click="updateProduct(item)"
-              >
-                Update
-              </button>
+                <button
+                  type="button"
+                  class="btn btn-outline-success btn-sm w-100 mt-2"
+                  @click="updateProduct(item)"
+                >
+                  Update
+                </button>
 
-              <button
-                type="button"
-                class="btn btn-outline-danger btn-sm w-100 mt-2"
-                @click="deleteProduct(item._id)"
-              >
-                Delete
-              </button>
+                <button
+                  type="button"
+                  class="btn btn-outline-danger btn-sm w-100 mt-2"
+                  @click="deleteProduct(item)"
+                >
+                  Delete
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -127,7 +129,7 @@ export default {
         method: "POST",
         headers: {
           Authorization: `token ${this.token}`,
-          "Content-Type": 'application/json'
+          "Content-Type": "application/json",
         },
         body: orderBody,
       })
@@ -142,15 +144,15 @@ export default {
         });
     },
 
-    deleteProduct(id) {
-      fetch(`${basicRoute}products/${id}`, {
+    deleteProduct(product) {
+      fetch(`${basicRoute}products/${product._id}`, {
         method: "DELETE",
         headers: {
           Authorization: `token ${this.token}`,
         },
       })
         .then(() => {
-          location.reload();
+          this.productList.splice(this.productList.indexOf(product), 1);
         })
         .catch((error) => {
           this.hasError = true;
@@ -159,8 +161,8 @@ export default {
         });
     },
 
-    updateProduct(updateProduct) {
-      this.$emit("showUpdateProduct", updateProduct);
+    updateProduct(product) {
+      this.$emit("showUpdateProduct", product);
     },
 
     getAllProducts() {
@@ -180,9 +182,9 @@ export default {
 </script>
 
 <style scoped>
-.back {
+.container-fluid{
+  min-height: calc(100vh - 56px);
   background-color: rgba(42, 42, 42, 1);
-  width: 100%;
-  min-height: 100%;
 }
+
 </style>
