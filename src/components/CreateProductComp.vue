@@ -50,7 +50,7 @@
         </div>
         <div class="row">
           <span
-            class="text-center fs-4"
+            class="text-center fs-5"
             :class="{ 'text-danger': hasError, 'text-success': !hasError }"
             >{{ infoMessage }}
           </span>
@@ -71,9 +71,7 @@ export default {
       name: "",
       price: "",
       productImage: null,
-
       imageUrl: null,
-
       infoMessage: "",
       hasError: false,
     };
@@ -85,20 +83,23 @@ export default {
       this.infoMessage = "invalid product name";
       return false;
     },
+
     checkPrice() {
       this.price = (Math.floor(this.price * 100) / 100).toFixed(2);
       if (!isNaN(this.price) && this.price > 0) return true;
       this.hasError = true;
-      this.infoMessage = "invalid price";
+      this.infoMessage = "invalid product price";
       this.price = "";
       return false;
     },
+
     checkImage() {
       if (this.productImage !== null) return true;
       this.hasError = true;
-      this.infoMessage = "load image, pleace";
+      this.infoMessage = "load product image, pleace";
       return false;
     },
+
     onFilePicked(event) {
       const fileReader = new FileReader();
       const files = event.target.files;

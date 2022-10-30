@@ -58,13 +58,11 @@ export default {
       })
         .then((response) => response.json())
         .then((data) => {
-          console.log(data);
           this.ordersList = data.orders;
         })
         .catch((error) => {
           this.hasError = true;
           this.errorMessage = `Server error: ${error}`;
-          console.log(`Error: ${error}`);
         });
     },
 
@@ -80,8 +78,7 @@ export default {
         })
         .catch((error) => {
           this.hasError = true;
-          this.errorMessage = `Server error: ${error}`;
-          console.log(`Error: ${error}`);
+          this.errorMessage = `Server error ${error}`;
         });
     },
   },

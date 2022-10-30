@@ -22,9 +22,9 @@
                 <button
                   type="button"
                   class="btn btn-outline-info btn-sm w-100 mt-2"
-                  @click="newOrderProductId = item._id"
                   data-bs-toggle="modal"
                   data-bs-target="#exampleModal"
+                  @click="newOrderProductId = item._id"
                 >
                   Buy
                 </button>
@@ -86,9 +86,9 @@
               <button
                 type="button"
                 class="btn btn-outline-info mt-2 float-end"
-                @click="createOrder"
                 data-bs-toggle="modal"
                 data-bs-target="#exampleModal"
+                @click="createOrder"
               >
                 make order
               </button>
@@ -183,7 +183,7 @@ export default {
 
 <style scoped>
 .container-fluid{
-  min-height: calc(100vh - 56px);
+  min-height: calc(100vh - 64px);
   background-color: rgba(42, 42, 42, 1);
 }
 
