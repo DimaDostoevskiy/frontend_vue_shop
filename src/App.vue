@@ -33,14 +33,14 @@
 </template>
 
 <script>
-import MainPage from "./components/MainPage.vue";
-import StartPage from "./components/StartPage.vue";
-import OrdersPage from "./components/OrdersPage.vue";
-import NavbarComp from "./components/NavbarComp.vue";
-import SignUpFormComp from "./components/SignUpFormComp.vue";
-import SignInFormComp from "./components/SignInFormComp.vue";
-import CreateProductComp from "./components/CreateProductComp.vue";
-import UpdateProductComp from "./components/UpdateProductComp.vue";
+import MainPage from "@/components/MainPage.vue";
+import StartPage from "@/components/StartPage.vue";
+import OrdersPage from "@/components/OrdersPage.vue";
+import NavbarComp from "@/components/NavbarComp.vue";
+import SignUpFormComp from "@/components/SignUpFormComp.vue";
+import SignInFormComp from "@/components/SignInFormComp.vue";
+import CreateProductComp from "@/components/CreateProductComp.vue";
+import UpdateProductComp from "@/components/UpdateProductComp.vue";
 
 export default {
   name: "App",
