@@ -35,33 +35,37 @@
   </div>
 </template>
   
-<script>
-export default {
-  name: "NavbarComp",
-  props: ["token"],
-  data() {
-    return {
-      isLogin: false,
-    };
-  },
-  methods: {
-    showSignIn() {
-      this.$emit("showSignIn");
-    },
-    showSignUp() {
-      this.$emit("showSignUp");
-    },
-    signOut() {
-      this.$emit("signOut");
-    },
-    showCreateProduct() {
-      this.$emit("showCreateProduct");
-    },
-    showOrdersPage() {
-      this.$emit("showOrdersPage");
-    },
-  },
-};
+<script setup>
+
+// import { ref } from 'vue'
+
+
+// export default {
+//   name: "NavbarComp",
+//   props: ["token"],
+//   data() {
+//     return {
+//       isLogin: false,
+//     };
+//   },
+//   methods: {
+//     showSignIn() {
+//       this.$emit("showSignIn");
+//     },
+//     showSignUp() {
+//       this.$emit("showSignUp");
+//     },
+//     signOut() {
+//       this.$emit("signOut");
+//     },
+//     showCreateProduct() {
+//       this.$emit("showCreateProduct");
+//     },
+//     showOrdersPage() {
+//       this.$emit("showOrdersPage");
+//     },
+//   },
+// };
 </script>
 
 <style scoped>

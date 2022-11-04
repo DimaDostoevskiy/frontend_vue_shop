@@ -1,3 +1,20 @@
+<script setup>
+import { ref } from 'vue';
+import { useStore } from 'vuex';
+
+const store = useStore();
+const signIn = (user) => store.dispatch('SignIn', user);
+
+const user = ref(
+  {
+    name: "",
+    email: "",
+    password: "",
+  }
+);
+
+</script>
+
 <template>
   <div>
     <div class="container-fluid">
@@ -32,14 +49,10 @@
               <button
                 type="button"
                 class="btn btn btn-outline-light w-100"
-                @click="singInEmit"
+                @click="signIn(user)"
               >
                 Sign In
               </button>
-              <!-- //// -->
-              <p v-if="hasError" class="text-center text-danger fs-4 mt-4">
-                error message
-              </p>
             </form>
           </div>
         </div>
@@ -47,28 +60,6 @@
     </div>
   </div>
 </template>
-
-<script>
-import useAuth from "@/composition/useAuth";
-export default {
-  name: "SignInFormComp",
-  
-  setup(props, { emit }) {
-    const { user, hasError, signIn } = useAuth();
-
-    const singInEmit = async () => {
-      const token = await signIn();
-      if (token) emit("signin", token);
-    };
-
-    return {
-      user,
-      hasError,
-      singInEmit,
-    };
-  },
-};
-</script>
 
 <style scoped>
 .container-fluid {

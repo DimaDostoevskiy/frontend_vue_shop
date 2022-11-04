@@ -1,3 +1,20 @@
+<script setup>
+import { ref } from 'vue';
+import { useStore } from 'vuex';
+
+
+const store = useStore();
+const signUp = (user) => store.dispatch('SignUp', user);
+
+const user = ref(
+  {
+    name: "",
+    email: "",
+    password: "",
+  }
+);
+</script>
+
 <template>
   <div>
     <div class="container-fluid">
@@ -8,38 +25,22 @@
             <form class="card-body">
               <!-- //// -->
               <div class="form-floating mb-3">
-                <input
-                  id="floatingInput"
-                  type="email"
-                  class="form-control bg-dark text-bg-dark"
-                  placeholder="name@example.com"
-                  v-model.trim="user.email"
-                />
+                <input id="floatingInput" type="email" class="form-control bg-dark text-bg-dark"
+                  placeholder="name@example.com" v-model.trim="user.email" />
                 <label for="floatingInput">Email address</label>
               </div>
               <!-- //// -->
               <div class="form-floating">
-                <input
-                  id="floatingPassword"
-                  type="password"
-                  class="form-control bg-dark text-bg-dark"
-                  placeholder="Password"
-                  v-model.trim="user.password"
-                />
+                <input id="floatingPassword" type="password" class="form-control bg-dark text-bg-dark"
+                  placeholder="Password" v-model.trim="user.password" />
                 <label for="floatingPassword">Password</label>
               </div>
               <!-- //// -->
-              <button
-                type="button"
-                class="btn btn btn-outline-light w-100"
-                @click="singUpEmit"
-              >
+              <button type="button" class="btn btn btn-outline-light w-100" @click="signUp(user)">
                 Sign Up
               </button>
+              <span>{{ count }}</span>
               <!-- //// -->
-              <p v-if="hasError" class="text-center text-danger fs-4 mt-4">
-                error message
-              </p>
             </form>
           </div>
         </div>
@@ -47,27 +48,6 @@
     </div>
   </div>
 </template>
-
-<script>
-import useAuth from "@/composition/useAuth";
-export default {
-  name: "SignUpFormComp",
-  setup(props, { emit }) {
-    const { user, hasError, signUp } = useAuth();
-
-    const singUpEmit = async () => {
-      const token = await signUp();
-      if (token) emit("signup", token);
-    };
-
-    return {
-      user,
-      hasError,
-      singUpEmit,
-    };
-  },
-};
-</script>
 
 <style scoped>
 .container-fluid {

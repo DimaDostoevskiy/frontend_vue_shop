@@ -1,18 +1,17 @@
+<script setup>
+// import { ref } from 'vue'
+import NavbarComp from "@/components/NavbarComp.vue";
+</script>
+
 <template>
   <div class="app">
-    <NavbarComp
-      @showCreateProduct="showCreateProduct"
-      @showOrdersPage="showOrdersPage"
-      @showSignUp="showSignUp"
-      @showSignIn="showSignIn"
-      @signOut="signOut"
-      :token="token"
-    />
+    <div>{{ count }}</div>
+    <NavbarComp :token="token" />
     <router-view></router-view>
   </div>
 </template>
 
-<script>
+<!-- <script>
 import NavbarComp from "@/components/NavbarComp.vue";
 
 
@@ -65,7 +64,7 @@ export default {
     },
   },
 };
-</script>
+</script> -->
 
 <style>
 .app {
