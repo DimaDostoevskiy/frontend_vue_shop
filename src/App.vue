@@ -8,51 +8,18 @@
       @signOut="signOut"
       :token="token"
     />
-
-    <template v-if="!token">
-      <StartPage v-if="activComp === 'start-page'" />
-      <SignInFormComp v-if="activComp === 'sign-in'" @signin="signIn" />
-      <SignUpFormComp v-if="activComp === 'sign-up'" @signup="signUp" />
-    </template>
-
-    <template v-if="token">
-      <MainPage
-        v-if="activComp === 'main-page'"
-        @showUpdateProduct="showUpdateProduct"
-        :token="token"
-      />
-      <CreateProductComp v-if="activComp === 'create-product'" :token="token" />
-      <OrdersPage v-if="activComp === 'orders'" :token="token" />
-      <UpdateProductComp
-        v-if="activComp === 'update-product'"
-        :token="token"
-        :updateProduct="updateProduct"
-      />
-    </template>
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-import MainPage from "@/components/MainPage.vue";
-import StartPage from "@/components/StartPage.vue";
-import OrdersPage from "@/components/OrdersPage.vue";
 import NavbarComp from "@/components/NavbarComp.vue";
-import SignUpFormComp from "@/components/SignUpFormComp.vue";
-import SignInFormComp from "@/components/SignInFormComp.vue";
-import CreateProductComp from "@/components/CreateProductComp.vue";
-import UpdateProductComp from "@/components/UpdateProductComp.vue";
+
 
 export default {
   name: "App",
   components: {
-    StartPage,
-    MainPage,
     NavbarComp,
-    OrdersPage,
-    SignUpFormComp,
-    SignInFormComp,
-    CreateProductComp,
-    UpdateProductComp,
   },
   data() {
     return {

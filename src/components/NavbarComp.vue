@@ -2,69 +2,29 @@
   <div>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <div class="container-fluid d-flex">
-        <a href="/" class="navbar-brand fs-5">Test Shop</a>
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNavDropdown"
-          aria-controls="navbarNavDropdown"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
+        <router-link to="/home" class="navbar-brand fs-5">Test </router-link>
+        <router-link to="/main" class="navbar-brand fs-5"> Shop</router-link>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+          aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
 
-        <div
-          id="navbarNavDropdown"
-          class="collapse navbar-collapse justify-content-end"
-        >
+        <div id="navbarNavDropdown" class="collapse navbar-collapse justify-content-end">
           <ul v-if="!token" class="navbar-nav">
             <li>
-              <button
-                type="button"
-                class="btn btn-outline-light"
-                @click="showSignIn"
-              >
-                Sign In
-              </button>
+              <router-link to="/signup" class="btn btn-outline-light">Sign Up</router-link>
             </li>
             <li>
-              <button
-                type="button"
-                class="btn btn-outline-light"
-                @click="showSignUp"
-              >
-                Sign Up
-              </button>
+              <router-link to="/signin" class="btn btn-outline-light">Sign In</router-link>
             </li>
           </ul>
 
           <ul v-if="token" class="navbar-nav">
             <li>
-              <button
-                type="button"
-                class="btn btn-outline-light"
-                @click="showCreateProduct"
-              >
-                Create Product
-              </button>
+              <router-link to="/create" class="btn btn-outline-light">create product</router-link>
             </li>
             <li>
-              <button
-                type="button"
-                class="btn btn-outline-light"
-                @click="showOrdersPage"
-              >
-                Orders
-              </button>
-            </li>
-            <li>
-              <button
-                @click="signOut"
-                class="btn btn-outline-light"
-                type="button"
-              >
+              <button @click="signOut" class="btn btn-outline-light" type="button">
                 Sign Out
               </button>
             </li>
@@ -75,7 +35,7 @@
   </div>
 </template>
   
-  <script>
+<script>
 export default {
   name: "NavbarComp",
   props: ["token"],
