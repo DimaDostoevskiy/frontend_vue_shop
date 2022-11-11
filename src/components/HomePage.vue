@@ -7,6 +7,5 @@
 <style scoped>
 .start-page {
   height: calc(100vh - 64px);
-  background-color: aqua;
 }
 </style>

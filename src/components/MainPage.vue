@@ -141,8 +141,4 @@ export default {
 </script>
 
 <style scoped>
-.container-fluid {
-  min-height: calc(100vh - 64px);
-  background-color: rgba(42, 42, 42, 1);
-}
 </style>

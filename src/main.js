@@ -1,71 +1,84 @@
 import { createApp } from "vue";
+import { createStore } from 'vuex'
+
 import App from "./App.vue";
 import router from "./router";
-import { createStore } from 'vuex'
+
 import { basicRoute } from '@/config/config'
 
 const store = createStore({
-    state() {
-        return {
-            token: null,
-            loginError: '',
-        }
-    },
-    mutations: {
-        setToken(state, token) {
-            state.token = token;
-        },
-        setLogError(state, error) {
-            state.loginError = error;
-        }
-    },
-    actions: {
-        async SignIn(context, user) {
-            try {
-                let response = await fetch(`${basicRoute}user/login`, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json;charset=utf-8",
-                    },
-                    body: JSON.stringify(user.value),
-                });
-                let result = await response.json();
 
-                if (response.ok) {
-                    localStorage.setItem('token', result.token);
-                    console.log(result.token);
-                    context.commit('setToken', result.token);
-                    //TODO:Show real message
-                } else {
-                    context.commit('setLogError', 'error!')
-                }
-            } catch (error) {
-                context.commit('setLogError', 'error!')
-            }
+  state() {
+    return {
+      token: '',
+      authorizeMessage: '',
+    }
+  },
 
-        },
-        async SignUp(context, user) {
-            try {
-                let response = await fetch(basicRoute + "user/signup", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json;charset=utf-8",
-                    },
-                    body: JSON.stringify(user.value),
-                });
-                if (response.ok) {
-                    console.log(response);
-                    //TODO:Show real message
-                    context.dispatch('SignIn', user)
-                } else {
-                    context.commit('setLogError', 'error!')
-                }
-            } catch (error) {
-                context.commit('setLogError', 'error!')
-            }
-
-        }
+  mutations: {
+    setToken(state, token) {
+      state.token = token;
     },
+    setAuthorizeMessage(state, message) {
+      state.authorizeMessage = message;
+    }
+  },
+
+  actions: {
+
+    async SignIn(context, user) {
+
+      try {
+        const response = await fetch(`${basicRoute}user/login`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json;charset=utf-8",
+          },
+          body: JSON.stringify(user),
+        });
+        const result = await response.json();
+
+        if (result.token) {
+          context.commit('setToken', result.token);
+          localStorage.setItem('token', result.token);
+          router.push('/')
+        } else {
+          context.commit('setAuthorizeMessage', result.message)
+        }
+      } catch (error) {
+        context.commit('setAuthorizeMessage', error)
+      }
+    },
+
+    async SignUp(context, user) {
+
+      try {
+        const response = await fetch(`${basicRoute}user/signup`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json;charset=utf-8",
+          },
+          body: JSON.stringify(user),
+        });
+        const result = await response.json();
+
+        if (response.ok)
+          context.dispatch('SignIn', user)
+        else
+          context.commit('setAuthorizeMessage', result.message)
+
+      } catch (error) {
+        context.commit('setAuthorizeMessage', error)
+      }
+    },
+
+    SignOut(context) {
+
+      localStorage.removeItem("token");
+      context.commit('setToken', '');
+    },
+
+  },
 })
 
 const app = createApp(App);

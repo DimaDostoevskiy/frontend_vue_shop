@@ -1,70 +1,13 @@
 <script setup>
-// import { ref } from 'vue'
 import NavbarComp from "@/components/NavbarComp.vue";
 </script>
 
 <template>
   <div class="app">
-    <div>{{ count }}</div>
-    <NavbarComp :token="token" />
+    <NavbarComp />
     <router-view></router-view>
   </div>
 </template>
-
-<!-- <script>
-import NavbarComp from "@/components/NavbarComp.vue";
-
-
-export default {
-  name: "App",
-  components: {
-    NavbarComp,
-  },
-  data() {
-    return {
-      activComp: "",
-      token: "",
-      updateProduct: {},
-    };
-  },
-  mounted() {
-    this.token = localStorage.getItem("token");
-    if (this.token) this.activComp = "main-page";
-    else this.activComp = "start-page";
-  },
-  methods: {
-    showSignIn() {
-      this.activComp = "sign-in";
-    },
-    showSignUp() {
-      this.activComp = "sign-up";
-    },
-    showCreateProduct() {
-      this.activComp = "create-product";
-    },
-    showUpdateProduct(product) {
-      this.updateProduct = product;
-      this.activComp = "update-product";
-    },
-    showOrdersPage() {
-      this.activComp = "orders";
-    },
-    signIn(token) {
-      this.token = token;
-      this.activComp = "main-page";
-    },
-    signUp(token) {
-      this.token = token;
-      this.activComp = "main-page";
-    },
-    signOut() {
-      this.token = "";
-      this.activComp = "";
-      localStorage.removeItem("token");
-    },
-  },
-};
-</script> -->
 
 <style>
 .app {
