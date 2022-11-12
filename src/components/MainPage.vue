@@ -4,7 +4,7 @@
     <div class="container-fluid pt-4">
       <div class="container">
         <div class="row">
-          <!-- / Products list / -->
+          <!-- / Products  / -->
           <div
             class="col-lg-3 col-md-4 col-sm-12"
             v-for="item in productList"

@@ -58,16 +58,18 @@
 
 <script setup>
 import { basicRoute } from "@/config/config";
+import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import { ref } from "vue";
 
+const route = useRouter();
 const store = useStore();
 
 const product = ref({
-  name: "",
-  price: "",
-  imageUrl: "",
-  productImage: "",
+  name: null,
+  price: null,
+  imageUrl: null,
+  productImage: null,
 });
 const onFilePicked = (event) => {
   const fileReader = new FileReader();
@@ -81,12 +83,17 @@ const onFilePicked = (event) => {
   fileReader.readAsDataURL(files[0]);
 };
 const addNewProduct = async () => {
+  if (
+    !product.value.name ||
+    !product.value.productImage ||
+    product.value.price < 0
+  )
+    return;
+
   const fd = new FormData();
   fd.append("name", product.value.name);
   fd.append("price", product.value.price);
   fd.append("productImage", product.value.productImage);
-
-  console.log(fd);
 
   try {
     const response = await fetch(`${basicRoute}products`, {
@@ -96,8 +103,7 @@ const addNewProduct = async () => {
       },
       body: fd,
     });
-    const result = await response.json();
-    console.log(result);
+    if (response.ok) route.push("/main");
   } catch (error) {
     console.log(error);
   }
