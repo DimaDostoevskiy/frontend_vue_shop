@@ -3,20 +3,24 @@
     <div class="row justify-content-center">
       <div class="col-6 card bg-dark text-bg-dark">
         <div class="row m-3">
+          <!-- / Product image / -->
           <div class="col-4">
-            <img :src="imageUrl" class="img w-100" alt="product image" />
+            <img
+              :src="product.imageUrl"
+              class="img w-100"
+              alt="product image"
+            />
           </div>
-
           <div class="col-8">
+            <!-- / Product name / -->
             <label for="newProductName" class="form-label">Product name</label>
             <input
               id="newProductName"
               type="text"
               class="form-control w-100"
-              v-model="name"
-              @change="checkInputs"
+              v-model="product.name"
             />
-
+            <!-- / Product price / -->
             <label for="newProductPrice" class="form-label mt-2"
               >Product price</label
             >
@@ -24,10 +28,9 @@
               id="newProductPrice"
               type="text"
               class="form-control w-100"
-              v-model="price"
-              @change="checkInputs"
+              v-model="product.price"
             />
-
+            <!-- / Button 'Load image' / -->
             <label for="file_input" class="btn btn-outline-light w-100 mt-4"
               >Load image</label
             >
@@ -38,7 +41,7 @@
               style="display: none"
               accept="image/*"
             />
-
+            <!-- / Button 'Add new produc' / -->
             <button
               @click="addNewProduct"
               class="btn btn-outline-light w-100 mt-4"
@@ -48,103 +51,57 @@
             </button>
           </div>
         </div>
-        <div class="row">
-          <span
-            class="text-center fs-5"
-            :class="{ 'text-danger': hasError, 'text-success': !hasError }"
-            >{{ infoMessage }}
-          </span>
-        </div>
       </div>
     </div>
   </div>
 </template>
 
-<script>
+<script setup>
 import { basicRoute } from "@/config/config";
+import { useStore } from "vuex";
+import { ref } from "vue";
 
-export default {
-  props: ["token"],
-  name: "CreateProductComp",
-  data() {
-    return {
-      name: "",
-      price: "",
-      productImage: null,
-      imageUrl: null,
-      infoMessage: "",
-      hasError: false,
-    };
-  },
-  methods: {
-    checkName() {
-      if (!isFinite(this.name) && this.name.length > 3) return true;
-      this.hasError = true;
-      this.infoMessage = "invalid product name";
-      return false;
-    },
+const store = useStore();
 
-    checkPrice() {
-      this.price = (Math.floor(this.price * 100) / 100).toFixed(2);
-      if (!isNaN(this.price) && this.price > 0) return true;
-      this.hasError = true;
-      this.infoMessage = "invalid product price";
-      this.price = "";
-      return false;
-    },
+const product = ref({
+  name: "",
+  price: "",
+  imageUrl: "",
+  productImage: "",
+});
+const onFilePicked = (event) => {
+  const fileReader = new FileReader();
+  const files = event.target.files;
+  product.value.productImage = files[0];
 
-    checkImage() {
-      if (this.productImage !== null) return true;
-      this.hasError = true;
-      this.infoMessage = "load product image, pleace";
-      return false;
-    },
+  fileReader.addEventListener("load", () => {
+    product.value.imageUrl = fileReader.result;
+  });
 
-    onFilePicked(event) {
-      const fileReader = new FileReader();
-      const files = event.target.files;
-      this.productImage = files[0];
+  fileReader.readAsDataURL(files[0]);
+};
+const addNewProduct = async () => {
+  const fd = new FormData();
+  fd.append("name", product.value.name);
+  fd.append("price", product.value.price);
+  fd.append("productImage", product.value.productImage);
 
-      fileReader.addEventListener("load", () => {
-        this.imageUrl = fileReader.result;
-      });
+  console.log(fd);
 
-      fileReader.readAsDataURL(files[0]);
-    },
-
-    async addNewProduct() {
-      if (!this.checkName() || !this.checkPrice() || !this.checkImage()) return;
-
-      let fd = new FormData();
-      fd.append("name", this.name);
-      fd.append("price", this.price);
-      fd.append("productImage", this.productImage);
-
-      try {
-        let response = await fetch(basicRoute + "products", {
-          method: "POST",
-          headers: {
-            Authorization: `token ${this.token}`,
-          },
-          body: fd,
-        });
-
-        if (response.status === 201) {
-          this.hasError = false;
-          this.infoMessage = "product created";
-        } else {
-          this.hasError = true;
-          this.infoMessage = "product not created";
-        }
-      } catch (error) {
-        this.hasError = true;
-        this.infoMessage = `Srver error: ${error}`;
-      }
-    },
-  },
+  try {
+    const response = await fetch(`${basicRoute}products`, {
+      method: "POST",
+      headers: {
+        Authorization: `token ${store.state.token}`,
+      },
+      body: fd,
+    });
+    const result = await response.json();
+    console.log(result);
+  } catch (error) {
+    console.log(error);
+  }
 };
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

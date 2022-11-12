@@ -1,13 +1,23 @@
-<script setup>
-import NavbarComp from "@/components/NavbarComp.vue";
-</script>
-
 <template>
   <div class="app">
     <NavbarComp />
     <router-view></router-view>
   </div>
 </template>
+
+<script setup>
+
+import NavbarComp from "@/components/NavbarComp.vue";
+import { onMounted } from "vue";
+import { useStore } from 'vuex';
+
+const store = useStore();
+
+onMounted(() => {
+  store.commit('setToken', localStorage.getItem('token'));
+})
+
+</script>
 
 <style>
 .app {

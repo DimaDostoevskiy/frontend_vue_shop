@@ -9,6 +9,7 @@ import { basicRoute } from '@/config/config'
 const store = createStore({
 
   state() {
+
     return {
       token: '',
       authorizeMessage: '',
@@ -16,6 +17,7 @@ const store = createStore({
   },
 
   mutations: {
+
     setToken(state, token) {
       state.token = token;
     },
@@ -49,7 +51,6 @@ const store = createStore({
         context.commit('setAuthorizeMessage', error)
       }
     },
-
     async SignUp(context, user) {
 
       try {
@@ -71,13 +72,12 @@ const store = createStore({
         context.commit('setAuthorizeMessage', error)
       }
     },
-
     SignOut(context) {
 
       localStorage.removeItem("token");
       context.commit('setToken', '');
+      router.push('/')
     },
-
   },
 })
 
