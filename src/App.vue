@@ -25,6 +25,6 @@ onMounted(() => {
   margin: 0px;
   padding: 0px;
   min-height: 100vh;
-  background-color: rgba(42, 42, 42, 1);
+  background-color: rgba(16, 16, 16, 1);
 }
 </style>

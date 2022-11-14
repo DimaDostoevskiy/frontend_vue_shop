@@ -31,56 +31,46 @@
   </div>
 </template>
 
-<script>
+<script setup>
+import { ref } from "vue";
+import { onMounted } from "vue";
+import { useStore } from "vuex";
 import { basicRoute } from "@/config/config";
 
-export default {
-  name: "MainComp",
-  props: ["token"],
-  data() {
-    return {
-      ordersList: [],
-      errorMessage: "",
-      hasError: false,
-      newOrderProductId: null,
-      newOrderQuantity: 0,
-    };
-  },
-  mounted() {
-    this.getAllOrders();
-  },
-  methods: {
-    getAllOrders() {
-      fetch(`${basicRoute}orders`, {
-        headers: {
-          Authorization: `token ${this.token}`,
-        },
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          this.ordersList = data.orders;
-        })
-        .catch((error) => {
-          this.hasError = true;
-          this.errorMessage = `Server error: ${error}`;
-        });
-    },
+const store = useStore();
+const ordersList = ref();
 
-    deleteOrder(order) {
-      fetch(`${basicRoute}orders/${order._id}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `token ${this.token}`,
-        },
-      })
-        .then(() => {
-          this.ordersList.splice(this.ordersList.indexOf(order), 1);
-        })
-        .catch((error) => {
-          this.hasError = true;
-          this.errorMessage = `Server error ${error}`;
-        });
-    },
-  },
+onMounted(() => {
+  getAllOrders();
+});
+
+const getAllOrders = async () => {
+  try {
+    const response = await fetch(`${basicRoute}orders`, {
+      headers: {
+        Authorization: `token ${store.state.token}`,
+      },
+    });
+    let responseData = await response.json();
+    if (responseData.orders) {
+      ordersList.value = responseData.orders;
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};
+const deleteOrder = async (order) => {
+  try {
+    const response = await fetch(`${basicRoute}orders/${order._id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `token ${store.state.token}`,
+      },
+    });
+    if (response.ok)
+      ordersList.value.splice(ordersList.value.indexOf(order), 1);
+  } catch (err) {
+    console.log(err);
+  }
 };
 </script>
