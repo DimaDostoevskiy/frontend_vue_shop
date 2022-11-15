@@ -59,13 +59,14 @@
 </template>
 
 <script setup>
+import { useRoute, useRouter } from "vue-router";
 import { ref, onMounted, computed } from "vue";
-import { useRoute } from "vue-router";
 import { basicRoute } from "@/config/config";
 import { useStore } from "vuex";
 
-const store = useStore();
 const route = useRoute();
+const store = useStore();
+const router = useRouter();
 
 const product = ref({
   name: null,
@@ -107,17 +108,14 @@ const update = async () => {
   fd.append("price", product.value.price);
   fd.append("productImage", product.value.productImage);
   try {
-    const response = await fetch(
-      `${basicRoute}products/${product.value.product._id}`,
-      {
-        method: "PATCH",
-        headers: {
-          Authorization: `token ${store.state.token}`,
-        },
-        body: fd,
-      }
-    );
-    console.log(response);
+    const response = await fetch(`${basicRoute}products/${route.params.id}`, {
+      method: "PATCH",
+      headers: {
+        Authorization: `token ${store.state.token}`,
+      },
+      body: fd,
+    });
+    if (response.ok) router.push("/main");
   } catch (err) {
     console.log(err);
   }

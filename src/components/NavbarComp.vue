@@ -1,6 +1,6 @@
 <template>
   <div>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="opacity8 navbar navbar-expand-lg navbar-dark">
       <div class="container d-flex">
         <button
           class="navbar-toggler"
@@ -14,7 +14,7 @@
           <span class="navbar-toggler-icon"></span>
         </button>
 
-        <router-link to="/" class="navbar-brand fs-5 m-1">Logo</router-link>
+        <router-link to="/" class="navbar-brand fs-5 m-1">Elco</router-link>
         <div
           id="navbarNavDropdown"
           class="collapse navbar-collapse justify-content-end"
@@ -68,4 +68,12 @@ const store = useStore();
 const signOut = () => store.dispatch("SignOut");
 </script>
 
-<style scoped></style>
+<style scoped>
+
+.opacity8{
+  opacity: .8;
+  position: relative;
+  z-index: 1;
+  background: black
+}
+</style>

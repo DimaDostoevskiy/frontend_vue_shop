@@ -6,7 +6,7 @@
           <!-- / Product image / -->
           <div class="col-4">
             <img
-              :src="product.imageUrl"
+              :src="product.imageUrl || `/pear.png`"
               class="img w-100"
               alt="product image"
             />
