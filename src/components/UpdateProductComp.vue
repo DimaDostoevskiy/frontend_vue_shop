@@ -5,15 +5,8 @@
         <div class="row m-3">
           <div class="col-4">
             <img
-              v-if="isUpdateImage"
-              :src="imageUrl"
-              class="img"
-              alt="product image"
-            />
-            <img
-              v-else
-              :src="`http://localhost:1111/${product.productImage}`"
-              class="img"
+              :src="productImageUrl"
+              class="img product-img"
               alt="product image"
             />
           </div>
@@ -25,7 +18,6 @@
               type="text"
               class="form-control w-100"
               v-model="product.name"
-              @change="checkInputs"
             />
 
             <label for="newProductPrice" class="form-label mt-2"
@@ -36,7 +28,6 @@
               type="text"
               class="form-control w-100"
               v-model="product.price"
-              @change="checkInputs"
             />
 
             <label for="file_input" class="btn btn-outline-light w-100 mt-4"
@@ -51,108 +42,90 @@
             />
 
             <button
-              @click="update"
-              class="btn btn-outline-light w-100 mt-4"
               type="button"
+              class="btn btn-outline-light w-100 mt-4"
+              @click="update"
             >
               Update
             </button>
           </div>
         </div>
         <div class="row">
-          <span
-            class="text-center fs-4"
-            :class="{ 'text-danger': hasError, 'text-success': !hasError }"
-            >{{ infoMessage }}
-          </span>
+          <span class="text-center fs-4">error </span>
         </div>
       </div>
     </div>
   </div>
 </template>
 
-<script>
+<script setup>
+import { ref, onMounted, computed } from "vue";
+import { useRoute } from "vue-router";
 import { basicRoute } from "@/config/config";
+import { useStore } from "vuex";
 
-export default {
-  name: "UpdateProductComp",
-  props: ["token", "updateProduct"],
-  data() {
-    return {
-      product: {
-        name: "",
-        price: "",
-        productImage: "",
-      },
-      imageUrl: null,
-      infoMessage: "",
-      hasError: false,
-      isUpdateImage: false,
-    };
-  },
-  mounted() {
-    this.product.name = this.updateProduct.name;
-    this.product.price = this.updateProduct.price;
-    this.product.productImage = this.updateProduct.productImage;
-  },
-  methods: {
-    checkInputs() {
-      return (
-        this.product.name !== "" &&
-        this.product.price > 0 &&
-        this.product.productImage !== null
-      );
-    },
+const store = useStore();
+const route = useRoute();
 
-    onFilePicked(event) {
-      this.isUpdateImage = true;
-      const fileReader = new FileReader();
+const product = ref({
+  name: null,
+  price: null,
+  productImage: null,
+});
 
-      fileReader.addEventListener("load", () => {
-        this.imageUrl = fileReader.result;
-      });
+const dataUrlImg = ref("");
+const productImageUrl = computed(() => {
+  if (dataUrlImg.value) {
+    return dataUrlImg.value;
+  }
+  return `${basicRoute}${product.value.productImage}`;
+});
 
-      const files = event.target.files;
-      this.product.productImage = files[0];
+onMounted(async () => {
+  const response = await fetch(`${basicRoute}products/${route.params.id}`).then(
+    (data) => data
+  );
+  const productData = await response.json();
+  product.value = productData.product;
+});
 
-      fileReader.readAsDataURL(files[0]);
-    },
+const onFilePicked = (event) => {
+  const fileReader = new FileReader();
+  const files = event.target.files;
+  product.value.productImage = files[0];
 
-    update() {
-      if (!this.checkInputs()) {
-        this.infoMessage = "Error";
-        this.hasError = true;
-        return;
-      }
+  fileReader.addEventListener("load", () => {
+    dataUrlImg.value = fileReader.result;
+  });
 
-      let fd = new FormData();
-      fd.append("name", this.product.name);
-      fd.append("price", this.product.price);
-      fd.append("productImage", this.product.productImage);
+  fileReader.readAsDataURL(files[0]);
+};
 
-      fetch(`${basicRoute}products/${this.updateProduct._id}`, {
+const update = async () => {
+  const fd = new FormData();
+  fd.append("name", product.value.name);
+  fd.append("price", product.value.price);
+  fd.append("productImage", product.value.productImage);
+  try {
+    const response = await fetch(
+      `${basicRoute}products/${product.value.product._id}`,
+      {
         method: "PATCH",
         headers: {
-          Authorization: `token ${this.token}`,
+          Authorization: `token ${store.state.token}`,
         },
         body: fd,
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          this.hasError = false;
-          this.infoMessage = data.message;
-        })
-        .catch((error) => {
-          this.hasError = true;
-          this.infoMessage = error.message;
-        });
-    },
-  },
+      }
+    );
+    console.log(response);
+  } catch (err) {
+    console.log(err);
+  }
 };
 </script>
 
 <style scoped>
-img {
+.product-img {
   width: 100%;
 }
 </style>

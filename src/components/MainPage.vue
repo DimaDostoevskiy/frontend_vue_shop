@@ -28,7 +28,7 @@
                   class="btn btn-outline-info btn-sm w-100 mt-2"
                   data-bs-toggle="modal"
                   data-bs-target="#exampleModal"
-                  @click="newOrderProductId = item._id"
+                  @click="newProductId = item._id"
                 >
                   Buy
                 </button>
@@ -36,7 +36,7 @@
                 <button
                   type="button"
                   class="btn btn-outline-success btn-sm w-100 mt-2"
-                  @click="updateProduct(item)"
+                  @click="updateProduct(item._id)"
                 >
                   Update
                 </button>
@@ -69,7 +69,7 @@
               class="btn-close btn-close-white float-end"
               data-bs-dismiss="modal"
               aria-label="Close"
-              @click="newOrderProductId = null"
+              @click="newProductId = 0"
             ></button>
 
             <div class="row mt-5">
@@ -82,7 +82,7 @@
                   class="form-control"
                   name="quantity"
                   id="quantity"
-                  v-model="newOrderQuantity"
+                  v-model="quantity"
                 />
               </div>
             </div>
@@ -106,18 +106,23 @@
 
 <script setup>
 import { basicRoute } from "@/config/config";
+import { useRouter } from "vue-router";
 import { ref, onMounted } from "vue";
 import { useStore } from "vuex";
 
 const store = useStore();
+const route = useRouter();
 
 const productList = ref([]);
+const quantity = ref();
+const newProductId = ref();
 
 onMounted(() => {
   getAllProducts();
 });
 
 const getAllProducts = async () => {
+
   try {
     const response = await fetch(`${basicRoute}products`);
     const result = await response.json();
@@ -128,6 +133,7 @@ const getAllProducts = async () => {
 };
 
 const deleteProduct = (product) => {
+
   fetch(`${basicRoute}products/${product._id}`, {
     method: "DELETE",
     headers: {
@@ -142,34 +148,33 @@ const deleteProduct = (product) => {
     });
 };
 
-// createOrder() {
-//   const orderBody = JSON.stringify({
-//     productId: this.newOrderProductId,
-//     quantity: parseInt(this.newOrderQuantity),
-//   });
-//   this.newOrderQuantity = 0;
-//   fetch(`${basicRoute}orders`, {
-//     method: "POST",
-//     headers: {
-//       Authorization: `token ${store.state.token}`,
-//       "Content-Type": "application/json",
-//     },
-//     body: orderBody,
-//   })
-//     .then((response) => {
-//       this.hasError = false;
-//       console.log(response);
-//     })
-//     .catch((error) => {
-//       this.hasError = true;
-//       this.errorMessage = `Server error: ${error}`;
-//       console.log(`Error: ${error}`);
-//     });
-// },
+const createOrder = () => {
 
-// updateProduct(product) {
-//   this.$emit("showUpdateProduct", product);
-// },
+  const newOrder = JSON.stringify({
+    productId: newProductId.value,
+    quantity: parseInt(quantity.value),
+  });
+
+  fetch(`${basicRoute}orders`, {
+    method: "POST",
+    headers: {
+      Authorization: `token ${store.state.token}`,
+      "Content-Type": "application/json",
+    },
+    body: newOrder,
+  })
+    .then((response) => {
+      quantity.value = 0;
+      console.log(response);
+    })
+    .catch((error) => {
+      console.log(`Error: ${error}`);
+    });
+};
+
+const updateProduct = (id) => {
+  route.push(`/update/${id}`)
+};
 </script>
 
 <style scoped></style>

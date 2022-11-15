@@ -4,6 +4,7 @@ import MainPage from "@/components/MainPage.vue";
 import SignInFormComp from "@/components/SignInFormComp.vue";
 import SignUpFormComp from "@/components/SignUpFormComp.vue";
 import CreateProductComp from "@/components/CreateProductComp.vue";
+import UpdateProductComp from "@/components/UpdateProductComp.vue";
 import OrdersPage from "@/components/OrdersPage.vue";
 
 const router = createRouter({
@@ -28,6 +29,11 @@ const router = createRouter({
       path: "/create",
       name: "create",
       component: CreateProductComp,
+    },
+    {
+      path: "/update/:id",
+      name: "update",
+      component: UpdateProductComp,
     },
     {
       path: "/main",
