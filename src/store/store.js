@@ -1,4 +1,4 @@
-import { createStore } from 'vuex'
+import { createStore } from "vuex";
 import router from "@/router";
 
 import { basicRoute } from "@/config/config";

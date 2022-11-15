@@ -48,10 +48,15 @@
             >
               Update
             </button>
+            <!-- /// -->
+            <button
+              type="button"
+              class="btn btn-outline-light w-100 mt-4"
+              @click="showToast('dsdfd')"
+            >
+              toast
+            </button>
           </div>
-        </div>
-        <div class="row text-center">
-          <span class="fs-4">{{ errorMessage }} </span>
         </div>
       </div>
     </div>
@@ -59,17 +64,18 @@
 </template>
 
 <script setup>
-import { useRoute, useRouter } from "vue-router";
 import { ref, onMounted, computed } from "vue";
+import { useRoute, useRouter } from "vue-router";
 import { basicRoute } from "@/config/config";
 import { useStore } from "vuex";
+
+import Toast from "vue3-toast-single";
 
 const route = useRoute();
 const store = useStore();
 const router = useRouter();
 
 const dataUrlImg = ref("");
-const errorMessage = ref("");
 
 const product = ref({
   name: null,
@@ -90,6 +96,19 @@ onMounted(async () => {
   const productData = await response.json();
   product.value = productData.product;
 });
+
+const showToast = (message, className) => {
+  const toast = new Toast({
+    horizontalPosition: "right",
+    verticalPosition: "top",
+    duration: 2000,
+    closeable: false,
+    transition: "slide-right",
+    className: className,
+  });
+
+  toast.show(message);
+};
 
 const onFilePicked = (event) => {
   const fileReader = new FileReader();
@@ -118,8 +137,15 @@ const update = async () => {
       },
       body: fd,
     });
-    if (response.ok) router.push("/main");
+
+    if (response.ok) {
+      showToast("product updated");
+      router.push("/main");
+    } else {
+      showToast("product not updated", "wk-warn");
+    }
   } catch (err) {
+    router.push("/main");
     console.log(err);
   }
 };

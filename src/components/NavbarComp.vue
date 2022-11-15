@@ -14,12 +14,12 @@
           <span class="navbar-toggler-icon"></span>
         </button>
 
-        <router-link to="/" class="navbar-brand fs-5 m-1">Elco</router-link>
+        <router-link to="/" class="navbar-brand fs-5 m-1">elco</router-link>
         <div
           id="navbarNavDropdown"
           class="collapse navbar-collapse justify-content-end"
         >
-          <ul v-if="!store.state.token" class="navbar-nav">
+          <ul v-if="!store.state.token" class="navbar-nav text-center">
             <li>
               <router-link to="/signup" class="navbar-brand fs-5"
                 >sign up</router-link
@@ -32,23 +32,24 @@
             </li>
           </ul>
 
-          <ul v-if="store.state.token" class="navbar-nav">
+          <ul v-if="store.state.token" class="navbar-nav text-center">
             <li>
               <router-link to="/main" class="navbar-brand fs-5">
                 shop</router-link
               >
+            </li>
+            <li>
               <router-link to="/orders" class="navbar-brand fs-5">
                 orders</router-link
               >
+            </li>
+            <li>
               <router-link to="/create" class="navbar-brand fs-5"
                 >create product</router-link
               >
-
-              <a
-                @click="signOut"
-                class="navbar-brand fs-5"
-                type="button"
-              >
+            </li>
+            <li>
+              <a @click="signOut" class="navbar-brand fs-5">
                 sign out
               </a>
             </li>
