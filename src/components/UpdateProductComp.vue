@@ -50,8 +50,8 @@
             </button>
           </div>
         </div>
-        <div class="row">
-          <span class="text-center fs-4">error </span>
+        <div class="row text-center">
+          <span class="fs-4">{{ errorMessage }} </span>
         </div>
       </div>
     </div>
@@ -68,18 +68,19 @@ const route = useRoute();
 const store = useStore();
 const router = useRouter();
 
+const dataUrlImg = ref("");
+const errorMessage = ref("");
+
 const product = ref({
   name: null,
   price: null,
   productImage: null,
 });
 
-const dataUrlImg = ref("");
 const productImageUrl = computed(() => {
-  if (dataUrlImg.value) {
-    return dataUrlImg.value;
-  }
-  return `${basicRoute}${product.value.productImage}`;
+  return dataUrlImg.value
+    ? dataUrlImg.value
+    : `${basicRoute}${product.value.productImage}`;
 });
 
 onMounted(async () => {
@@ -93,6 +94,7 @@ onMounted(async () => {
 const onFilePicked = (event) => {
   const fileReader = new FileReader();
   const files = event.target.files;
+
   product.value.productImage = files[0];
 
   fileReader.addEventListener("load", () => {
@@ -107,6 +109,7 @@ const update = async () => {
   fd.append("name", product.value.name);
   fd.append("price", product.value.price);
   fd.append("productImage", product.value.productImage);
+
   try {
     const response = await fetch(`${basicRoute}products/${route.params.id}`, {
       method: "PATCH",

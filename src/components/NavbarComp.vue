@@ -21,13 +21,13 @@
         >
           <ul v-if="!store.state.token" class="navbar-nav">
             <li>
-              <router-link to="/signup" class="btn btn-outline-light m-1"
-                >Sign Up</router-link
+              <router-link to="/signup" class="navbar-brand fs-5"
+                >sign up</router-link
               >
             </li>
             <li>
-              <router-link to="/signin" class="btn btn-outline-light m-1"
-                >Sign In</router-link
+              <router-link to="/signin" class="navbar-brand fs-5"
+                >sign in</router-link
               >
             </li>
           </ul>
@@ -40,19 +40,17 @@
               <router-link to="/orders" class="navbar-brand fs-5">
                 orders</router-link
               >
-              <router-link to="/create" class="btn btn-outline-light m-1"
-                >Create product</router-link
+              <router-link to="/create" class="navbar-brand fs-5"
+                >create product</router-link
               >
-            </li>
 
-            <li>
-              <button
+              <a
                 @click="signOut"
-                class="btn btn-outline-light m-1"
+                class="navbar-brand fs-5"
                 type="button"
               >
-                Sign Out
-              </button>
+                sign out
+              </a>
             </li>
           </ul>
         </div>
@@ -69,11 +67,10 @@ const signOut = () => store.dispatch("SignOut");
 </script>
 
 <style scoped>
-
-.opacity8{
-  opacity: .8;
+.opacity8 {
+  opacity: 0.8;
   position: relative;
   z-index: 1;
-  background: black
+  background: black;
 }
 </style>
