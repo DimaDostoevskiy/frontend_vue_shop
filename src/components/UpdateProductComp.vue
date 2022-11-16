@@ -48,14 +48,6 @@
             >
               Update
             </button>
-            <!-- /// -->
-            <button
-              type="button"
-              class="btn btn-outline-light w-100 mt-4"
-              @click="showToast('dsdfd')"
-            >
-              toast
-            </button>
           </div>
         </div>
       </div>
@@ -69,7 +61,7 @@ import { useRoute, useRouter } from "vue-router";
 import { basicRoute } from "@/config/config";
 import { useStore } from "vuex";
 
-import Toast from "vue3-toast-single";
+import { showToast } from "@/helpers/toast";
 
 const route = useRoute();
 const store = useStore();
@@ -96,19 +88,6 @@ onMounted(async () => {
   const productData = await response.json();
   product.value = productData.product;
 });
-
-const showToast = (message, className) => {
-  const toast = new Toast({
-    horizontalPosition: "right",
-    verticalPosition: "top",
-    duration: 2000,
-    closeable: false,
-    transition: "slide-right",
-    className: className,
-  });
-
-  toast.show(message);
-};
 
 const onFilePicked = (event) => {
   const fileReader = new FileReader();

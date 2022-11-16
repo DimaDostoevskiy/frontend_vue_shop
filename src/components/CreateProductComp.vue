@@ -62,6 +62,8 @@ import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import { ref } from "vue";
 
+import { showToast } from "@/helpers/toast";
+
 const route = useRouter();
 const store = useStore();
 
@@ -103,7 +105,10 @@ const addNewProduct = async () => {
       },
       body: fd,
     });
-    if (response.ok) route.push("/main");
+    if (response.ok) {
+      route.push("/main");
+      showToast("Product created");
+    }
   } catch (error) {
     console.log(error);
   }

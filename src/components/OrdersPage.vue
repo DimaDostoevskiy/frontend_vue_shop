@@ -37,6 +37,8 @@ import { onMounted } from "vue";
 import { useStore } from "vuex";
 import { basicRoute } from "@/config/config";
 
+import { showToast } from "@/helpers/toast";
+
 const store = useStore();
 const ordersList = ref();
 
@@ -51,9 +53,9 @@ const getAllOrders = async () => {
         Authorization: `token ${store.state.token}`,
       },
     });
-    let responseData = await response.json();
-    if (responseData.orders) {
-      ordersList.value = responseData.orders;
+    let result = await response.json();
+    if (result.orders) {
+      ordersList.value = result.orders;
     }
   } catch (err) {
     console.log(err);
@@ -67,8 +69,10 @@ const deleteOrder = async (order) => {
         Authorization: `token ${store.state.token}`,
       },
     });
-    if (response.ok)
+    if (response.ok) {
       ordersList.value.splice(ordersList.value.indexOf(order), 1);
+      showToast("Order deleted");
+    }
   } catch (err) {
     console.log(err);
   }

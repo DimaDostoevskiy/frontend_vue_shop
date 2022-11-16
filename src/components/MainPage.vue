@@ -19,7 +19,7 @@
               />
               <div class="card-body">
                 <!-- / Product name / -->
-                <h6 class="card-title">{{ `delicious ${item.name}` }}</h6>
+                <h6 class="card-title">{{ `${item.name}` }}</h6>
                 <!-- / Product price / -->
                 <p class="card-text">{{ `₽ ${item.price}` }}</p>
                 <!-- / Button 'Buy' / -->
@@ -78,10 +78,10 @@
               </div>
               <div class="col-8">
                 <input
+                  id="quantity"
                   type="text"
                   class="form-control"
                   name="quantity"
-                  id="quantity"
                   v-model="quantity"
                 />
               </div>
@@ -110,6 +110,8 @@ import { useRouter } from "vue-router";
 import { ref, onMounted } from "vue";
 import { useStore } from "vuex";
 
+import { showToast } from "@/helpers/toast";
+
 const store = useStore();
 const route = useRouter();
 
@@ -127,6 +129,7 @@ const getAllProducts = async () => {
     const response = await fetch(`${basicRoute}products`);
     const result = await response.json();
     productList.value = result.products;
+   
   } catch (error) {
     console.log(`Error: ${error}`);
   }
@@ -163,9 +166,9 @@ const createOrder = () => {
     },
     body: newOrder,
   })
-    .then((response) => {
+    .then(() => {
       quantity.value = 0;
-      console.log(response);
+      showToast("order created");
     })
     .catch((error) => {
       console.log(`Error: ${error}`);
@@ -173,7 +176,7 @@ const createOrder = () => {
 };
 
 const updateProduct = (id) => {
-  route.push(`/update/${id}`)
+  route.push(`/update/${id}`);
 };
 </script>
 

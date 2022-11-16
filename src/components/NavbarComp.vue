@@ -19,7 +19,10 @@
           id="navbarNavDropdown"
           class="collapse navbar-collapse justify-content-end"
         >
-          <ul v-if="!store.state.token" class="navbar-nav text-center">
+          <ul
+            v-if="!store.state.token"
+            class="navbar-nav text-center store-link"
+          >
             <li>
               <router-link to="/signup" class="navbar-brand fs-5"
                 >sign up</router-link
@@ -32,7 +35,10 @@
             </li>
           </ul>
 
-          <ul v-if="store.state.token" class="navbar-nav text-center">
+          <ul
+            v-if="store.state.token"
+            class="navbar-nav text-center store-link"
+          >
             <li>
               <router-link to="/main" class="navbar-brand fs-5">
                 shop</router-link
@@ -49,9 +55,9 @@
               >
             </li>
             <li>
-              <a @click="signOut" class="navbar-brand fs-5">
-                sign out
-              </a>
+              <router-link to="/" @click="signOut" class="navbar-brand fs-5"
+                >sign out</router-link
+              >
             </li>
           </ul>
         </div>
@@ -74,4 +80,11 @@ const signOut = () => store.dispatch("SignOut");
   z-index: 1;
   background: black;
 }
+.store-link li {
+  margin-left: 20px;
+}
+.store-link li:hover {
+  text-decoration: underline;
+}
+
 </style>
