@@ -1,32 +1,34 @@
 <template>
   <div>
     <div class="container mt-5">
-      <table class="table table-dark table-striped">
-        <thead>
-          <tr>
-            <th scope="col">id</th>
-            <th scope="col">Name</th>
-            <th scope="col">Quantity</th>
-            <th scope="col"></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="item in ordersList" :key="item._id">
-            <th>{{ item._id }}</th>
-            <td>{{ item.product.name }}</td>
-            <td>{{ item.quantity }}</td>
-            <td>
-              <button
-                type="button"
-                class="btn btn-outline-danger w-100"
-                @click="deleteOrder(item)"
-              >
-                Delete
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="row">
+        <div class="col-12 col-md-12 col-xl-12">
+          <table class="table table-success table-striped">
+            <thead>
+              <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Quantity</th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="item in ordersList" :key="item._id">
+                <td>{{ item.product.name }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>
+                  <button
+                    type="button"
+                    class="btn btn-outline-danger w-100"
+                    @click="deleteOrder(item)"
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   </div>
 </template>

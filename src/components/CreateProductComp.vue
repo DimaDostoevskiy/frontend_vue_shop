@@ -1,7 +1,7 @@
 <template>
   <div class="container mt-5">
     <div class="row justify-content-center">
-      <div class="col-6 card bg-dark text-bg-dark">
+      <div class="col-10 col-md-8 col-xl-6 card bg-dark text-bg-dark">
         <div class="row m-3">
           <!-- / Product image / -->
           <div class="col-4">
@@ -73,6 +73,7 @@ const product = ref({
   imageUrl: null,
   productImage: null,
 });
+
 const onFilePicked = (event) => {
   const fileReader = new FileReader();
   const files = event.target.files;
@@ -84,13 +85,16 @@ const onFilePicked = (event) => {
 
   fileReader.readAsDataURL(files[0]);
 };
+
 const addNewProduct = async () => {
   if (
     !product.value.name ||
     !product.value.productImage ||
     product.value.price < 0
-  )
+  ) {
+    showToast("Product not created", "wk-warn");
     return;
+  }
 
   const fd = new FormData();
   fd.append("name", product.value.name);
@@ -108,9 +112,11 @@ const addNewProduct = async () => {
     if (response.ok) {
       route.push("/main");
       showToast("Product created");
+    } else {
+      showToast("Product not created", "wk-warn");
     }
   } catch (error) {
-    console.log(error);
+    console.log(`Error create product ${error}`);
   }
 };
 </script>

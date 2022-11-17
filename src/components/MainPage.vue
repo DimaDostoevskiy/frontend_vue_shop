@@ -4,12 +4,12 @@
     <div class="container-fluid pt-4">
       <div class="container">
         <div class="row">
-          <!-- / Products  / -->
           <div
             class="col-lg-3 col-md-4 col-sm-12"
             v-for="item in productList"
             :key="item.id"
           >
+            <!-- / Card / -->
             <div class="card m-2 bg-dark text-bg-dark">
               <!-- / Product image / -->
               <img
@@ -49,6 +49,7 @@
                   Delete
                 </button>
               </div>
+              <!-- / Card / -->
             </div>
           </div>
         </div>
@@ -124,34 +125,41 @@ onMounted(() => {
 });
 
 const getAllProducts = async () => {
-
   try {
     const response = await fetch(`${basicRoute}products`);
     const result = await response.json();
-    productList.value = result.products;
-   
+    if (result.products) {
+      productList.value = result.products;
+    }
   } catch (error) {
     console.log(`Error: ${error}`);
   }
 };
 
-const deleteProduct = (product) => {
-
-  fetch(`${basicRoute}products/${product._id}`, {
-    method: "DELETE",
-    headers: {
-      Authorization: `token ${store.state.token}`,
-    },
-  })
-    .then(() => {
-      productList.value.splice(productList.value.indexOf(product), 1);
-    })
-    .catch((error) => {
-      console.log(`Error: ${error}`);
+const deleteProduct = async (product) => {
+  try {
+    const response = await fetch(`${basicRoute}products/${product._id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `token ${store.state.token}`,
+      },
     });
+    if (response.ok) {
+      productList.value.splice(productList.value.indexOf(product), 1);
+      showToast("product deleted");
+    } else {
+      showToast("product not deleted");
+    }
+  } catch (error) {
+    console.log(`Error :deleteProduct: ${error}`);
+  }
 };
 
 const createOrder = () => {
+  if (!parseInt(quantity.value) || parseInt(quantity.value) < 0) {
+    showToast("incorrect quantity", "wk-warn");
+    return;
+  }
 
   const newOrder = JSON.stringify({
     productId: newProductId.value,
@@ -171,7 +179,7 @@ const createOrder = () => {
       showToast("order created");
     })
     .catch((error) => {
-      console.log(`Error: ${error}`);
+      console.log(`Error :createOrder: ${error}`);
     });
 };
 

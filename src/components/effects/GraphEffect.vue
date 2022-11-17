@@ -17,7 +17,7 @@ onMounted(() => {
   canvas.value.style.backgroundColor = "rgba(42, 42, 42, 1)";
 
   let vertexList = [];
-  const startVertexCol = 100;
+  const startVertexCol = canvas.value.width / 10;
 
   const drowLine = (vertex1, vertex2) => {
     ctx.strokeStyle = "white";
@@ -34,6 +34,7 @@ onMounted(() => {
   };
 
   const draw = () => {
+    if (!canvas.value) return;
     ctx.clearRect(0, 0, canvas.value.width, canvas.value.height);
     vertexList.forEach((i) => i.draw());
     requestAnimationFrame(draw);
