@@ -10,6 +10,8 @@
 - git/github
 - nodejs/npm
 - json web token
+- html
+- css
 
 В проекте используется тестовый api [сервер](https://github.com/lokilok1993/Node.js_api_sample)
 nodejs + mongodb + jwt
