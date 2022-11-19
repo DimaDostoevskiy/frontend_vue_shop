@@ -3,18 +3,18 @@
     <div class="container mt-5">
       <div class="row">
         <div class="col-12 col-md-12 col-xl-12">
-          <table class="table table-success table-striped">
+          <table class="table text-danger">
             <thead>
               <tr>
-                <th scope="col">Name</th>
-                <th scope="col">Quantity</th>
-                <th scope="col"></th>
+                <th>Name</th>
+                <th>Quantity</th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
               <tr v-for="item in ordersList" :key="item._id">
-                <td>{{ item.product.name }}</td>
-                <td>{{ item.quantity }}</td>
+                <td class="w-50">{{ item.product.name }}</td>
+                <td class="w-25">{{ item.quantity }}</td>
                 <td>
                   <button
                     type="button"

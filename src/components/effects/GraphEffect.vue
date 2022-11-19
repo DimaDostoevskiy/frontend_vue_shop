@@ -17,7 +17,7 @@ onMounted(() => {
   canvas.value.style.backgroundColor = "rgba(42, 42, 42, 1)";
 
   let vertexList = [];
-  const startVertexCol = canvas.value.width / 10;
+  const startVertexCol = canvas.value.width / 16;
 
   const drowLine = (vertex1, vertex2) => {
     ctx.strokeStyle = "white";
