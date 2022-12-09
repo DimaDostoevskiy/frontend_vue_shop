@@ -1,7 +1,7 @@
 <template>
   <div class="container mt-5">
     <div class="row justify-content-center">
-      <div class="col-6 card bg-dark text-bg-dark">
+      <div class="card col-10 col-md-8 col-xl-6 bg-dark text-bg-dark">
         <div class="row m-3">
           <div class="col-4">
             <img
